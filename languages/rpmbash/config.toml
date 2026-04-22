@@ -1,0 +1,4 @@
+name = "RPMBash"
+grammar = "rpmbash"
+tab_size = 4
+hard_tabs = false

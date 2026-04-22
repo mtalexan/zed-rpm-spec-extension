@@ -1,0 +1,26 @@
+id = "rpmspec"
+name = "RPM Spec"
+version = "0.1.0"
+schema_version = 1
+authors = []
+description = "Language support for RPM Spec files, including syntax highlighting, completions, hover, go-to-definition, and find-references."
+repository = "https://github.com/mtalexan/zed-rpm-spec-extension"
+
+# Grammar from https://github.com/cryptomilk/tree-sitter-rpmspec (MIT license)
+# This repo uses a multi-grammar layout: rpmspec/ and rpmbash/ are subdirectories.
+# Zed resolves the grammar path from the tree-sitter.json in the repo root.
+[grammars.rpmspec]
+repository = "https://github.com/cryptomilk/tree-sitter-rpmspec"
+rev = "01e5b9ed82eedb0d70b250406849c90e833f0a0a"
+path = "rpmspec"
+
+[grammars.rpmbash]
+repository = "https://github.com/cryptomilk/tree-sitter-rpmspec"
+rev = "01e5b9ed82eedb0d70b250406849c90e833f0a0a"
+path = "rpmbash"
+
+[language_servers.rpm-spec-ls]
+name = "RPM Spec Language Server"
+languages = ["RPM Spec"]
+
+snippets = ["./snippets/rpmspec.json"]

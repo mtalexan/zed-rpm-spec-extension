@@ -1,0 +1,144 @@
+{
+  "RPM Spec - Full Template": {
+    "prefix": "spec",
+    "description": "Full RPM spec file template",
+    "body": [
+      "Name:           ${1:package-name}",
+      "Version:        ${2:1.0.0}",
+      "Release:        %{?dist}1",
+      "Summary:        ${3:Short description}",
+      "",
+      "License:        ${4:Apache-2.0}",
+      "URL:            ${5:https://example.com}",
+      "Source0:        %{name}-%{version}.tar.gz",
+      "",
+      "BuildRequires:  ${6:gcc}",
+      "Requires:       ${7:glibc}",
+      "",
+      "%description",
+      "${8:Package description.}",
+      "",
+      "%prep",
+      "%autosetup",
+      "",
+      "%build",
+      "${9:%make_build}",
+      "",
+      "%install",
+      "${10:%make_install}",
+      "",
+      "%files",
+      "%license LICENSE",
+      "%doc README*",
+      "${11:%{_bindir}/%{name}}",
+      "",
+      "%changelog",
+      "${12:* $(date '+%a %b %d %Y') ${13:Packager Name} <${14:email@example.com}> - ${2:1.0.0}-1}",
+      "- Initial package"
+    ]
+  },
+  "RPM Spec - %package": {
+    "prefix": "%package",
+    "description": "Sub-package declaration",
+    "body": [
+      "%package ${1:subpackage-name}",
+      "Summary:  ${2:Sub-package description}",
+      "Requires: %{name} = %{version}-%{release}",
+      "",
+      "%description ${1:subpackage-name}",
+      "${3:Sub-package description.}"
+    ]
+  },
+  "RPM Spec - %ifarch": {
+    "prefix": "%ifarch",
+    "description": "%ifarch conditional block",
+    "body": [
+      "%ifarch ${1:x86_64}",
+      "$0",
+      "%endif"
+    ]
+  },
+  "RPM Spec - %ifnarch": {
+    "prefix": "%ifnarch",
+    "description": "%ifnarch conditional block",
+    "body": [
+      "%ifnarch ${1:x86_64}",
+      "$0",
+      "%endif"
+    ]
+  },
+  "RPM Spec - %if": {
+    "prefix": "%if",
+    "description": "%if conditional block",
+    "body": [
+      "%if ${1:0%{?fedora}}",
+      "$0",
+      "%endif"
+    ]
+  },
+  "RPM Spec - %if/%else": {
+    "prefix": "%ifelse",
+    "description": "%if/%else/%endif conditional block",
+    "body": [
+      "%if ${1:0%{?fedora}}",
+      "${2}",
+      "%else",
+      "${3}",
+      "%endif"
+    ]
+  },
+  "RPM Spec - %global": {
+    "prefix": "%global",
+    "description": "Define a global macro",
+    "body": ["%global ${1:macro_name} ${2:value}"]
+  },
+  "RPM Spec - %prep section": {
+    "prefix": "%prep",
+    "description": "%prep build scriptlet",
+    "body": ["%prep", "%autosetup"]
+  },
+  "RPM Spec - %build section": {
+    "prefix": "%build",
+    "description": "%build build scriptlet",
+    "body": ["%build", "${1:%make_build}"]
+  },
+  "RPM Spec - %install section": {
+    "prefix": "%install",
+    "description": "%install build scriptlet",
+    "body": ["%install", "${1:%make_install}"]
+  },
+  "RPM Spec - %check section": {
+    "prefix": "%check",
+    "description": "%check build scriptlet",
+    "body": ["%check", "${1:make test}"]
+  },
+  "RPM Spec - %files section": {
+    "prefix": "%files",
+    "description": "%files section",
+    "body": [
+      "%files",
+      "%license LICENSE",
+      "%doc README*",
+      "${1:%{_bindir}/%{name}}"
+    ]
+  },
+  "RPM Spec - %changelog entry": {
+    "prefix": "%changelog",
+    "description": "%changelog entry",
+    "body": [
+      "%changelog",
+      "* ${1:Mon Jan 01 2024} ${2:Packager Name} <${3:email@example.com}> - ${4:1.0.0-1}",
+      "- ${5:Initial package}"
+    ]
+  },
+  "RPM Spec - BuildRequires": {
+    "prefix": "BuildRequires",
+    "description": "Build dependency",
+    "body": ["BuildRequires: ${1:package-name}"]
+  },
+  "RPM Spec - Requires": {
+    "prefix": "Requires",
+    "description": "Runtime dependency",
+    "body": ["Requires: ${1:package-name}"]
+  }
+}

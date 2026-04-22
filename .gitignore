@@ -1,0 +1,14 @@
+# Rust build output
+/target/
+/rpm-spec-ls/target/
+/grammars
+
+# Compiled WASM output
+*.wasm
+
+# Cargo temp files
+cargo_output.txt
+
+# Editor/OS
+.DS_Store
+.vscode/
