@@ -1,7 +1,7 @@
 {
-  "RPM Spec - Full Template": {
+  "RPMSpec - Full Template": {
     "prefix": "spec",
-    "description": "Full RPM spec file template",
+    "description": "Full RPMSpec file template",
     "body": [
       "Name:           ${1:package-name}",
       "Version:        ${2:1.0.0}",
@@ -37,7 +37,7 @@
       "- Initial package"
     ]
   },
-  "RPM Spec - %package": {
+  "RPMSpec - %package": {
     "prefix": "%package",
     "description": "Sub-package declaration",
     "body": [
@@ -49,7 +49,7 @@
       "${3:Sub-package description.}"
     ]
   },
-  "RPM Spec - %ifarch": {
+  "RPMSpec - %ifarch": {
     "prefix": "%ifarch",
     "description": "%ifarch conditional block",
     "body": [
@@ -58,7 +58,7 @@
       "%endif"
     ]
   },
-  "RPM Spec - %ifnarch": {
+  "RPMSpec - %ifnarch": {
     "prefix": "%ifnarch",
     "description": "%ifnarch conditional block",
     "body": [
@@ -67,7 +67,7 @@
       "%endif"
     ]
   },
-  "RPM Spec - %if": {
+  "RPMSpec - %if": {
     "prefix": "%if",
     "description": "%if conditional block",
     "body": [
@@ -76,7 +76,7 @@
       "%endif"
     ]
   },
-  "RPM Spec - %if/%else": {
+  "RPMSpec - %if/%else": {
     "prefix": "%ifelse",
     "description": "%if/%else/%endif conditional block",
     "body": [
@@ -87,32 +87,32 @@
       "%endif"
     ]
   },
-  "RPM Spec - %global": {
+  "RPMSpec - %global": {
     "prefix": "%global",
     "description": "Define a global macro",
     "body": ["%global ${1:macro_name} ${2:value}"]
   },
-  "RPM Spec - %prep section": {
+  "RPMSpec - %prep section": {
     "prefix": "%prep",
     "description": "%prep build scriptlet",
     "body": ["%prep", "%autosetup"]
   },
-  "RPM Spec - %build section": {
+  "RPMSpec - %build section": {
     "prefix": "%build",
     "description": "%build build scriptlet",
     "body": ["%build", "${1:%make_build}"]
   },
-  "RPM Spec - %install section": {
+  "RPMSpec - %install section": {
     "prefix": "%install",
     "description": "%install build scriptlet",
     "body": ["%install", "${1:%make_install}"]
   },
-  "RPM Spec - %check section": {
+  "RPMSpec - %check section": {
     "prefix": "%check",
     "description": "%check build scriptlet",
     "body": ["%check", "${1:make test}"]
   },
-  "RPM Spec - %files section": {
+  "RPMSpec - %files section": {
     "prefix": "%files",
     "description": "%files section",
     "body": [
@@ -122,7 +122,7 @@
       "${1:%{_bindir}/%{name}}"
     ]
   },
-  "RPM Spec - %changelog entry": {
+  "RPMSpec - %changelog entry": {
     "prefix": "%changelog",
     "description": "%changelog entry",
     "body": [
@@ -131,12 +131,12 @@
       "- ${5:Initial package}"
     ]
   },
-  "RPM Spec - BuildRequires": {
+  "RPMSpec - BuildRequires": {
     "prefix": "BuildRequires",
     "description": "Build dependency",
     "body": ["BuildRequires: ${1:package-name}"]
   },
-  "RPM Spec - Requires": {
+  "RPMSpec - Requires": {
     "prefix": "Requires",
     "description": "Runtime dependency",
     "body": ["Requires: ${1:package-name}"]

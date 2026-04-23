@@ -1,8 +1,9 @@
-id = "rpmspec"
-name = "RPM Spec"
-version = "0.1.0"
+# WARNING: Another existing extension already uses the id 'rpmspec' and is called 'RPM Spec'.
+id = "rpmspec-auto"
+name = "RPMSpec with included Language Server"
+version = "0.2.0"
 schema_version = 1
-authors = []
+authors = ["Mike Alexander <github@trackit.fe80.email>"]
 description = "Language support for RPM Spec files, including syntax highlighting, completions, hover, go-to-definition, and find-references."
 repository = "https://github.com/mtalexan/zed-rpm-spec-extension"
 
@@ -19,8 +20,11 @@ repository = "https://github.com/cryptomilk/tree-sitter-rpmspec"
 rev = "01e5b9ed82eedb0d70b250406849c90e833f0a0a"
 path = "rpmbash"
 
-[language_servers.rpm-spec-ls]
-name = "RPM Spec Language Server"
-languages = ["RPM Spec"]
+[language_servers.rpm-spec-lsp]
+name = "RPMSpec Language Server"
+# WARNING: The name 'RPM Spec' is used another extension: https://github.com/mtorromeo/zed-rpmspec-language,
+#          so use a slightly different name to avoid conflicts rather than users who accidentally have both
+#          not knowing which they're getting when they pick from the language list.
+languages = ["RPMSpec"]
 
 snippets = ["./snippets/rpmspec.json"]

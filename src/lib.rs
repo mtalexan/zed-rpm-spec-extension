@@ -11,7 +11,7 @@ impl RpmSpecExtension {
         worktree: &Worktree,
     ) -> zed::Result<String> {
         // First check if the binary is already available on PATH
-        if let Some(path) = worktree.which("rpm-spec-ls") {
+        if let Some(path) = worktree.which("rpm-spec-lsp") {
             return Ok(path);
         }
 
@@ -25,8 +25,8 @@ impl RpmSpecExtension {
         // Determine the download URL based on the current platform
         let (os, arch) = zed::current_platform();
         let binary_name = match os {
-            zed::Os::Windows => "rpm-spec-ls.exe",
-            _ => "rpm-spec-ls",
+            zed::Os::Windows => "rpm-spec-lsp.exe",
+            _ => "rpm-spec-lsp",
         };
         let platform_suffix = match (os, arch) {
             (zed::Os::Linux, zed::Architecture::X8664) => "linux-x86_64",
@@ -34,7 +34,7 @@ impl RpmSpecExtension {
             (zed::Os::Mac, zed::Architecture::Aarch64) => "macos-aarch64",
             _ => {
                 return Err(format!(
-                    "rpm-spec-ls: unsupported platform {:?}/{:?}",
+                    "rpm-spec-lsp: unsupported platform {:?}/{:?}",
                     os, arch
                 ))
             }
@@ -42,7 +42,7 @@ impl RpmSpecExtension {
 
         let version = "0.1.0";
         let download_url = format!(
-            "https://github.com/mtalexan/zed-rpm-spec-extension/releases/download/v{version}/rpm-spec-ls-{platform_suffix}"
+            "https://github.com/mtalexan/zed-rpm-spec-extension/releases/download/v{version}/rpm-spec-lsp-{platform_suffix}"
         );
 
         let binary_path = format!("{}/{binary_name}", language_server_id.as_ref());
@@ -52,10 +52,10 @@ impl RpmSpecExtension {
             &binary_path,
             zed::DownloadedFileType::Uncompressed,
         )
-        .map_err(|e| format!("rpm-spec-ls: failed to download binary: {e}"))?;
+        .map_err(|e| format!("rpm-spec-lsp: failed to download binary: {e}"))?;
 
         zed::make_file_executable(&binary_path)
-            .map_err(|e| format!("rpm-spec-ls: failed to make binary executable: {e}"))?;
+            .map_err(|e| format!("rpm-spec-lsp: failed to make binary executable: {e}"))?;
 
         self.cached_binary_path = Some(binary_path.clone());
         Ok(binary_path)

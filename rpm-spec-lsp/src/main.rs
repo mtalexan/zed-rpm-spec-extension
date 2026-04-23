@@ -30,6 +30,99 @@ static ARCH_SHORTCUTS: &[&str] = &[
 ];
 
 // =============================================================================
+// Section / scriptlet / condition keywords for completion
+// =============================================================================
+
+static SECTION_KEYWORDS: &[&str] = &[
+    "%package",
+    "%description",
+    "%prep",
+    "%build",
+    "%install",
+    "%check",
+    "%files",
+    "%changelog",
+    "%pre",
+    "%post",
+    "%preun",
+    "%postun",
+    "%pretrans",
+    "%posttrans",
+    "%preuntrans",
+    "%postuntrans",
+    "%verifyscript",
+    "%triggerprein",
+    "%triggerin",
+    "%triggerun",
+    "%triggerpostun",
+    "%filetriggerin",
+    "%filetriggerun",
+    "%filetriggerpostun",
+    "%transfiletriggerin",
+    "%transfiletriggerun",
+    "%transfiletriggerpostun",
+    "%end",
+];
+
+static SCRIPTLET_MACROS: &[&str] = &[
+    "%setup",
+    "%autosetup",
+    "%autopatch",
+    "%patch",
+    "%make_build",
+    "%make_install",
+    "%configure",
+    "%cmake",
+    "%cmake_build",
+    "%cmake_install",
+    "%meson",
+    "%meson_build",
+    "%meson_install",
+    "%ninja_build",
+    "%ninja_install",
+    "%pyproject_buildrequires",
+    "%pyproject_wheel",
+    "%pyproject_install",
+    "%gem_install",
+    "%mvn_build",
+    "%mvn_install",
+    "%cargo_build",
+    "%cargo_install",
+    "%cargo_test",
+    "%install_info",
+    "%find_lang",
+    "%doc",
+    "%license",
+    "%dir",
+    "%ghost",
+    "%config",
+    "%attr",
+    "%defattr",
+    "%exclude",
+    "%verify",
+];
+
+static CONDITION_KEYWORDS: &[&str] = &[
+    "%if",
+    "%ifarch",
+    "%ifnarch",
+    "%ifos",
+    "%ifnos",
+    "%elif",
+    "%elifarch",
+    "%elifos",
+    "%else",
+    "%endif",
+    "%include",
+    "%global",
+    "%define",
+    "%undefine",
+    "%bcond_with",
+    "%bcond_without",
+    "%bcond",
+];
+
+// =============================================================================
 // Preamble tag hover descriptions
 // Written independently; factual content sourced from the RPM Spec documentation
 // at https://rpm-software-management.github.io/rpm/manual/spec.html
@@ -172,6 +265,104 @@ fn preamble_tag_docs(tag: &str) -> Option<&'static str> {
 }
 
 // =============================================================================
+// Built-in RPM macro hover descriptions
+// =============================================================================
+
+fn builtin_macro_docs(name: &str) -> Option<&'static str> {
+    match name {
+        "name" => Some("Expands to the package `Name` tag value."),
+        "version" => Some("Expands to the package `Version` tag value."),
+        "release" => Some("Expands to the package `Release` tag value."),
+        "epoch" => Some("Expands to the package `Epoch` tag value (empty string if unset)."),
+        "summary" => Some("Expands to the package `Summary` tag value."),
+        "license" => Some("Expands to the package `License` tag value."),
+        "url" => Some("Expands to the package `URL` tag value."),
+        "buildroot" => Some(
+            "The root directory used during the install phase. \
+             All `%install` scriptlet actions should install under this path.",
+        ),
+        "_prefix" => Some("Installation prefix, typically `/usr`."),
+        "_exec_prefix" => Some("Exec prefix, typically `/usr`."),
+        "_bindir" => Some("Directory for user-executable binaries, typically `/usr/bin`."),
+        "_sbindir" => Some("Directory for system-admin binaries, typically `/usr/sbin`."),
+        "_libexecdir" => Some(
+            "Directory for program executables launched by other programs, \
+             typically `/usr/libexec`.",
+        ),
+        "_libdir" => Some(
+            "Directory for object code libraries, typically `/usr/lib` or `/usr/lib64`.",
+        ),
+        "_includedir" => Some("Directory for C header files, typically `/usr/include`."),
+        "_datadir" => Some(
+            "Read-only architecture-independent data, typically `/usr/share`.",
+        ),
+        "_datarootdir" => Some("Data root directory, typically `/usr/share`."),
+        "_mandir" => Some("Manual page directory, typically `/usr/share/man`."),
+        "_infodir" => Some("GNU Info page directory, typically `/usr/share/info`."),
+        "_docdir" => Some("Documentation directory, typically `/usr/share/doc`."),
+        "_sysconfdir" => Some("System configuration directory, typically `/etc`."),
+        "_localstatedir" => Some(
+            "Persistent local state data directory, typically `/var`.",
+        ),
+        "_sharedstatedir" => Some(
+            "Architecture-independent modifiable data, typically `/var/lib`.",
+        ),
+        "_rundir" => Some("Runtime data directory, typically `/run`."),
+        "_tmppath" => Some("Temporary directory path used during builds."),
+        "_builddir" => Some("The build directory, typically `%{_topdir}/BUILD`."),
+        "_sourcedir" => Some("The sources directory, typically `%{_topdir}/SOURCES`."),
+        "_specdir" => Some("The spec files directory, typically `%{_topdir}/SPECS`."),
+        "_rpmdir" => Some(
+            "Output directory for built RPM packages, typically `%{_topdir}/RPMS`.",
+        ),
+        "_srcrpmdir" => Some(
+            "Output directory for built SRPM packages, typically `%{_topdir}/SRPMS`.",
+        ),
+        "_topdir" => Some("Top-level RPM build directory, typically `~/rpmbuild`."),
+        "_rpmconfigdir" => Some("RPM configuration directory, typically `/usr/lib/rpm`."),
+        "_rpmmacrodir" => Some(
+            "RPM macros directory, typically `/usr/lib/rpm/macros.d`.",
+        ),
+        "_unitdir" => Some(
+            "systemd unit file directory, typically `/usr/lib/systemd/system`.",
+        ),
+        "_userunitdir" => Some(
+            "systemd user unit file directory, typically `/usr/lib/systemd/user`.",
+        ),
+        "_udevrulesdir" => Some(
+            "udev rules directory, typically `/usr/lib/udev/rules.d`.",
+        ),
+        "optflags" => Some(
+            "Compiler optimisation flags for the target architecture \
+             (e.g. `-O2 -g -Wall`).",
+        ),
+        "make_build" => Some(
+            "Runs `make` with the appropriate parallel job flags (`-j$(nproc)`).",
+        ),
+        "make_install" => Some("Runs `make install DESTDIR=%{buildroot}`."),
+        "configure" => Some(
+            "Runs `./configure` with standard RPM directory layout arguments.",
+        ),
+        "python3" => Some("Path to the Python 3 interpreter."),
+        "python3_sitelib" => Some("Python 3 pure-module site-packages directory."),
+        "python3_sitearch" => Some(
+            "Python 3 architecture-specific site-packages directory.",
+        ),
+        "python3_version" => Some(
+            "Python 3 major.minor version string (e.g. `3.12`).",
+        ),
+        "_arch" => Some(
+            "The build target architecture (e.g. `x86_64`, `aarch64`).",
+        ),
+        "nil" => Some(
+            "Always expands to the empty string. \
+             Useful for conditional empty values.",
+        ),
+        _ => None,
+    }
+}
+
+// =============================================================================
 // Regex helpers (compiled once)
 // =============================================================================
 
@@ -194,6 +385,22 @@ fn re_undefine() -> &'static Regex {
     static RE: OnceLock<Regex> = OnceLock::new();
     RE.get_or_init(|| {
         Regex::new(r"(?im)^%undefine\s+(\S+)").expect("invalid undefine regex")
+    })
+}
+
+/// Matches the first word of any spec section header line (e.g. `%prep`, `%package`).
+fn re_section_header() -> &'static Regex {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    RE.get_or_init(|| {
+        Regex::new(
+            r"(?i)^%(prep|build|install|check|files|changelog|pre|post|preun|postun|\
+pretrans|posttrans|preuntrans|postuntrans|verifyscript|\
+triggerprein|triggerin|triggerun|triggerpostun|\
+filetriggerin|filetriggerun|filetriggerpostun|\
+transfiletriggerin|transfiletriggerun|transfiletriggerpostun|\
+package|description|end)\b",
+        )
+        .expect("invalid section header regex")
     })
 }
 
@@ -258,7 +465,7 @@ impl Backend {
     fn word_at(text: &str, position: Position) -> Option<(String, usize, usize)> {
         let offset = Self::offset_of(text, position)?;
         let bytes = text.as_bytes();
-        let is_word = |b: u8| b.is_ascii_alphanumeric() || b == b'_' || b == b'-';
+        let is_word = |b: u8| b.is_ascii_alphanumeric() || b == b'_';
         let start = (0..offset)
             .rev()
             .find(|&i| !is_word(bytes[i]))
@@ -306,6 +513,137 @@ impl Backend {
         }
         items
     }
+
+    /// Returns `true` if `line_idx` is within the preamble or a `%package` /
+    /// `%description` sub-section — i.e. where preamble tag completions apply.
+    fn cursor_in_preamble(doc: &str, line_idx: u32) -> bool {
+        for (i, line) in doc.lines().enumerate() {
+            if i as u32 >= line_idx {
+                break;
+            }
+            let t = line.trim_start();
+            if re_section_header().is_match(t) {
+                let lower = t.to_ascii_lowercase();
+                if !lower.starts_with("%package") && !lower.starts_with("%description") {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+
+    /// Completion items for preamble tags, with documentation and insert text.
+    fn preamble_tag_items() -> Vec<CompletionItem> {
+        static TAG_NAMES: &[&str] = &[
+            "Name", "Version", "Release", "Epoch", "License", "SourceLicense",
+            "Summary", "Group", "URL", "BugURL",
+            "Source", "Source0", "Source1", "Source2",
+            "Patch", "Patch0", "Patch1",
+            "BuildRequires", "BuildConflicts",
+            "Requires", "Provides", "Conflicts", "Obsoletes",
+            "Recommends", "Suggests", "Supplements", "Enhances",
+            "BuildArch", "BuildArchitectures",
+            "ExcludeArch", "ExclusiveArch", "ExcludeOS", "ExclusiveOS",
+            "Vendor", "Packager", "Distribution", "Buildsystem",
+            "AutoReq", "AutoProv", "AutoReqProv",
+        ];
+        TAG_NAMES
+            .iter()
+            .map(|&label| {
+                let base = label.trim_end_matches(|c: char| c.is_ascii_digit());
+                let lookup = if base.is_empty() { label } else { base };
+                let doc = preamble_tag_docs(lookup);
+                CompletionItem {
+                    label: label.to_string(),
+                    kind: Some(CompletionItemKind::FIELD),
+                    documentation: doc.map(|d| {
+                        Documentation::MarkupContent(MarkupContent {
+                            kind: MarkupKind::Markdown,
+                            value: d.to_string(),
+                        })
+                    }),
+                    insert_text: Some(format!("{label}: ")),
+                    ..Default::default()
+                }
+            })
+            .collect()
+    }
+
+    /// Completion items for section headers, scriptlet macros, and condition keywords.
+    fn keyword_items() -> Vec<CompletionItem> {
+        let mut items = Vec::new();
+        for &kw in SECTION_KEYWORDS {
+            items.push(CompletionItem {
+                label: kw.to_string(),
+                kind: Some(CompletionItemKind::MODULE),
+                ..Default::default()
+            });
+        }
+        for &kw in SCRIPTLET_MACROS {
+            items.push(CompletionItem {
+                label: kw.to_string(),
+                kind: Some(CompletionItemKind::FUNCTION),
+                ..Default::default()
+            });
+        }
+        for &kw in CONDITION_KEYWORDS {
+            items.push(CompletionItem {
+                label: kw.to_string(),
+                kind: Some(CompletionItemKind::KEYWORD),
+                ..Default::default()
+            });
+        }
+        items
+    }
+
+    /// Completion items for user-defined macros (`%global` / `%define`).
+    fn user_macro_items(doc: &str) -> Vec<CompletionItem> {
+        Self::collect_definitions(doc)
+            .into_iter()
+            .map(|(name, val, _)| {
+                let label = format!("%{{{name}}}");
+                let detail = if val.is_empty() { None } else { Some(val) };
+                CompletionItem {
+                    label,
+                    kind: Some(CompletionItemKind::VARIABLE),
+                    detail,
+                    ..Default::default()
+                }
+            })
+            .collect()
+    }
+
+    /// Parse the spec document into `(section_name, start_line, end_line)` triples.
+    fn parse_sections(doc: &str) -> Vec<(String, u32, u32)> {
+        let lines: Vec<&str> = doc.lines().collect();
+        let total = lines.len() as u32;
+        // Collect (name, start_line) pairs
+        let mut headers: Vec<(String, u32)> = Vec::new();
+        let mut found_first = false;
+        for (i, &line) in lines.iter().enumerate() {
+            let t = line.trim_start();
+            if re_section_header().is_match(t) {
+                if !found_first && i > 0 {
+                    // There are preamble lines before the first section header
+                    headers.push(("preamble".to_string(), 0));
+                }
+                found_first = true;
+                let name = t.split_whitespace().next().unwrap_or(t).to_string();
+                headers.push((name, i as u32));
+            }
+        }
+        if !found_first && !lines.is_empty() {
+            headers.push(("preamble".to_string(), 0));
+        }
+        // Convert to (name, start, end) triples
+        let mut result = Vec::new();
+        for i in 0..headers.len() {
+            let (ref name, start) = headers[i];
+            let end = headers.get(i + 1).map(|h| h.1).unwrap_or(total);
+            result.push((name.clone(), start, end));
+        }
+        result
+    }
 }
 
 #[tower_lsp::async_trait]
@@ -317,13 +655,15 @@ impl LanguageServer for Backend {
                     TextDocumentSyncKind::FULL,
                 )),
                 completion_provider: Some(CompletionOptions {
-                    trigger_characters: Some(vec![" ".to_string()]),
+                    trigger_characters: Some(vec![" ".to_string(), "%".to_string()]),
                     resolve_provider: Some(false),
                     ..Default::default()
                 }),
                 hover_provider: Some(HoverProviderCapability::Simple(true)),
                 definition_provider: Some(OneOf::Left(true)),
                 references_provider: Some(OneOf::Left(true)),
+                document_symbol_provider: Some(OneOf::Left(true)),
+                rename_provider: Some(OneOf::Left(true)),
                 ..Default::default()
             },
             ..Default::default()
@@ -332,7 +672,7 @@ impl LanguageServer for Backend {
 
     async fn initialized(&self, _: InitializedParams) {
         self.client
-            .log_message(MessageType::INFO, "rpm-spec-ls initialized")
+            .log_message(MessageType::INFO, "rpm-spec-lsp initialized")
             .await;
     }
 
@@ -377,20 +717,40 @@ impl LanguageServer for Backend {
         };
 
         let trimmed = line.trim_start();
-        let prev_char = if position.character > 0 {
-            line.chars().nth(position.character as usize - 1)
-        } else {
-            None
-        };
+        let trigger = params
+            .context
+            .as_ref()
+            .and_then(|c| c.trigger_character.as_deref());
 
-        // Offer arch completions after %ifarch / %ifnarch followed by a space
-        if (trimmed.starts_with("%ifarch") || trimmed.starts_with("%ifnarch"))
-            && prev_char == Some(' ')
-        {
-            return Ok(Some(CompletionResponse::Array(Self::arch_completions())));
+        // Space trigger: arch completions after %ifarch / %ifnarch only
+        if trigger == Some(" ") {
+            if trimmed.starts_with("%ifarch") || trimmed.starts_with("%ifnarch") {
+                return Ok(Some(CompletionResponse::Array(Self::arch_completions())));
+            }
+            return Ok(None);
         }
 
-        Ok(None)
+        let in_preamble = Self::cursor_in_preamble(&doc, position.line);
+
+        match trigger {
+            // `%` trigger: keywords + user macros
+            Some("%") => {
+                let mut items = Self::keyword_items();
+                items.extend(Self::user_macro_items(&doc));
+                Ok(Some(CompletionResponse::Array(items)))
+            }
+            // Manual invocation (no trigger): everything appropriate for context
+            None => {
+                let mut items = Self::keyword_items();
+                items.extend(Self::user_macro_items(&doc));
+                if in_preamble {
+                    items.extend(Self::preamble_tag_items());
+                }
+                Ok(Some(CompletionResponse::Array(items)))
+            }
+            // Any other trigger character: no completion
+            _ => Ok(None),
+        }
     }
 
     async fn hover(&self, params: HoverParams) -> Result<Option<Hover>> {
@@ -406,68 +766,57 @@ impl LanguageServer for Backend {
             None => return Ok(None),
         };
 
-        // --- Check for preamble tag hover (word at column 0) ---
-        if position.character == 0 || {
-            // Allow the cursor to be anywhere on the tag word when it starts at col 0
-            let line = doc.lines().nth(position.line as usize).unwrap_or("");
-            let ch0 = line.chars().next();
-            ch0.map(|c| c.is_ascii_alphabetic()).unwrap_or(false)
-        } {
-            if let Some((word, start, end)) = Self::word_at(&doc, position) {
-                let line_text = doc.lines().nth(position.line as usize).unwrap_or("");
-                // Only treat as a preamble tag if the word starts at column 0
-                let word_col = line_text.find(&word).unwrap_or(usize::MAX);
-                if word_col == 0 {
-                    if let Some(desc) = preamble_tag_docs(&word) {
-                        let start_pos = Self::position_of(&doc, start);
-                        let end_pos = Self::position_of(&doc, end);
-                        return Ok(Some(Hover {
-                            contents: HoverContents::Markup(MarkupContent {
-                                kind: MarkupKind::Markdown,
-                                value: format!("### `{word}`\n\n{desc}"),
-                            }),
-                            range: Some(Range {
-                                start: start_pos,
-                                end: end_pos,
-                            }),
-                        }));
-                    }
+        let line_text = doc.lines().nth(position.line as usize).unwrap_or("");
+
+        // --- Preamble tag hover ---
+        // Only fire when the word starts at column 0 (tag names are at line start).
+        if let Some((word, start, end)) = Self::word_at(&doc, position) {
+            if line_text.starts_with(word.as_str()) {
+                // Normalise numbered variants: Source1 → Source, Patch3 → Patch
+                let base = word.trim_end_matches(|c: char| c.is_ascii_digit());
+                let key = if base.is_empty() { word.as_str() } else { base };
+                if let Some(desc) = preamble_tag_docs(key) {
+                    let start_pos = Self::position_of(&doc, start);
+                    let end_pos = Self::position_of(&doc, end);
+                    return Ok(Some(Hover {
+                        contents: HoverContents::Markup(MarkupContent {
+                            kind: MarkupKind::Markdown,
+                            value: format!("### `{word}`\n\n{desc}"),
+                        }),
+                        range: Some(Range {
+                            start: start_pos,
+                            end: end_pos,
+                        }),
+                    }));
                 }
             }
         }
 
-        // --- Check for %{varName} or %global/%define variable hover ---
+        // --- User-defined macro hover: cursor inside %{varName} or on a definition ---
         if let Some((word, start, end)) = Self::word_at(&doc, position) {
-            let offset = Self::offset_of(&doc, position).unwrap_or(0);
+            // Bug fix: use `start` (byte start of the word) not the cursor offset
+            // so that the two bytes before the word are reliably checked for `%{`.
+            let is_macro_ref = start >= 2
+                && doc.as_bytes().get(start - 2) == Some(&b'%')
+                && doc.as_bytes().get(start - 1) == Some(&b'{');
 
-            // Check the two characters before the word for "%{"
-            let is_macro_ref = offset >= 2
-                && doc.as_bytes().get(offset.saturating_sub(word.len()).saturating_sub(2))
-                    == Some(&b'%')
-                && doc.as_bytes().get(offset.saturating_sub(word.len()).saturating_sub(1))
-                    == Some(&b'{');
-
-            // Also accept cursor directly on the varName after %global
-            let line_text = doc.lines().nth(position.line as usize).unwrap_or("");
             let is_global_def = line_text.trim_start().starts_with("%global")
                 || line_text.trim_start().starts_with("%define");
 
             if is_macro_ref || is_global_def {
-                // Collect all const values defined for this variable
                 let defs = Self::collect_definitions(&doc);
                 let values: Vec<&str> = defs
                     .iter()
                     .filter(|(name, val, _)| name == &word && !val.is_empty())
-                    .filter(|(_, val, _)| val.chars().all(|c| c.is_alphanumeric() || " ._+-~^".contains(c)))
                     .map(|(_, val, _)| val.as_str())
                     .collect();
 
                 if !values.is_empty() {
                     let body = if values.len() == 1 {
-                        format!("```yaml\n{word}: {}\n```", values[0])
+                        format!("```\n{word}: {}\n```", values[0])
                     } else {
                         format!(
-                            "```yaml\n{}:\n  - {}\n```",
+                            "```\n{}:\n  - {}\n```",
                             word,
                             values.join("\n  - ")
                         )
@@ -478,6 +827,22 @@ impl LanguageServer for Backend {
                         contents: HoverContents::Markup(MarkupContent {
                             kind: MarkupKind::Markdown,
                             value: body,
+                        }),
+                        range: Some(Range {
+                            start: start_pos,
+                            end: end_pos,
+                        }),
+                    }));
+                }
+
+                // --- Built-in macro hover fallback ---
+                if let Some(desc) = builtin_macro_docs(&word) {
+                    let start_pos = Self::position_of(&doc, start);
+                    let end_pos = Self::position_of(&doc, end);
+                    return Ok(Some(Hover {
+                        contents: HoverContents::Markup(MarkupContent {
+                            kind: MarkupKind::Markdown,
+                            value: format!("### `%{{{word}}}`\n\n{desc}"),
                         }),
                         range: Some(Range {
                             start: start_pos,
@@ -597,6 +962,131 @@ impl LanguageServer for Backend {
             return Ok(None);
         }
         Ok(Some(locations))
+    }
+
+    async fn document_symbol(
+        &self,
+        params: DocumentSymbolParams,
+    ) -> Result<Option<DocumentSymbolResponse>> {
+        let uri = params.text_document.uri.to_string();
+        let doc = match self.documents.get(&uri) {
+            Some(d) => d.clone(),
+            None => return Ok(None),
+        };
+
+        let sections = Self::parse_sections(&doc);
+        let symbols: Vec<DocumentSymbol> = sections
+            .into_iter()
+            .map(|(name, start_line, end_line)| {
+                let range = Range {
+                    start: Position { line: start_line, character: 0 },
+                    end: Position {
+                        line: end_line.saturating_sub(1),
+                        character: 0,
+                    },
+                };
+                #[allow(deprecated)]
+                DocumentSymbol {
+                    name,
+                    detail: None,
+                    kind: SymbolKind::NAMESPACE,
+                    tags: None,
+                    deprecated: None,
+                    range,
+                    selection_range: Range {
+                        start: Position { line: start_line, character: 0 },
+                        end: Position { line: start_line, character: 0 },
+                    },
+                    children: None,
+                }
+            })
+            .collect();
+        Ok(Some(DocumentSymbolResponse::Nested(symbols)))
+    }
+
+    async fn rename(&self, params: RenameParams) -> Result<Option<WorkspaceEdit>> {
+        let uri = params.text_document_position.text_document.uri.clone();
+        let position = params.text_document_position.position;
+        let new_name = params.new_name;
+
+        let doc = match self.documents.get(&uri.to_string()) {
+            Some(d) => d.clone(),
+            None => return Ok(None),
+        };
+
+        let (old_name, _, _) = match Self::word_at(&doc, position) {
+            Some(w) => w,
+            None => return Ok(None),
+        };
+
+        // Only rename symbols that have a %global/%define definition
+        let defs = Self::collect_definitions(&doc);
+        if !defs.iter().any(|(name, _, _)| name == &old_name) {
+            return Ok(None);
+        }
+
+        let mut edits: Vec<TextEdit> = Vec::new();
+
+        // Rename the definition name on each %global/%define line
+        for (name, _, line_num) in &defs {
+            if name != &old_name {
+                continue;
+            }
+            let line_text = doc.lines().nth(*line_num as usize).unwrap_or("");
+            if let Some(col) = line_text.find(name.as_str()) {
+                edits.push(TextEdit {
+                    range: Range {
+                        start: Position { line: *line_num, character: col as u32 },
+                        end: Position {
+                            line: *line_num,
+                            character: (col + name.len()) as u32,
+                        },
+                    },
+                    new_text: new_name.clone(),
+                });
+            }
+        }
+
+        // Rename all %{oldName} references
+        for cap in re_macro_ref().captures_iter(&doc) {
+            if &cap[1] != old_name.as_str() {
+                continue;
+            }
+            let mat = cap.get(1).unwrap();
+            edits.push(TextEdit {
+                range: Range {
+                    start: Self::position_of(&doc, mat.start()),
+                    end: Self::position_of(&doc, mat.end()),
+                },
+                new_text: new_name.clone(),
+            });
+        }
+
+        // Rename all %undefine oldName occurrences
+        for cap in re_undefine().captures_iter(&doc) {
+            if &cap[1] != old_name.as_str() {
+                continue;
+            }
+            let mat = cap.get(1).unwrap();
+            edits.push(TextEdit {
+                range: Range {
+                    start: Self::position_of(&doc, mat.start()),
+                    end: Self::position_of(&doc, mat.end()),
+                },
+                new_text: new_name.clone(),
+            });
+        }
+
+        if edits.is_empty() {
+            return Ok(None);
+        }
+
+        let mut changes = std::collections::HashMap::new();
+        changes.insert(uri, edits);
+        Ok(Some(WorkspaceEdit {
+            changes: Some(changes),
+            ..Default::default()
+        }))
     }
 }
 

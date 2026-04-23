@@ -1,6 +1,6 @@
 # Rust build output
 /target/
-/rpm-spec-ls/target/
+/rpm-spec-lsp/target/
 /grammars
 
 # Compiled WASM output

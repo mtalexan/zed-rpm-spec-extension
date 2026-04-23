@@ -1,4 +1,4 @@
-name = "RPM Spec"
+name = "RPMSpec"
 grammar = "rpmspec"
 path_suffixes = ["spec"]
 line_comments = ["# "]
